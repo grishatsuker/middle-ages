@@ -27,10 +27,23 @@ jobs: #Callbacks, what happens when there's a trigger.
       uses: actions/setup-node@v1 #Here we will setup node.
       with:
         node-version: ${{ matrix.node-version }} #The version available...
-    - run: npm ci 
+    - run: npm ci_v2
     - run: npm run build --if-present
     - run: npm test
+    - run: echo "CI finished succesfully"
 
+    - name: Build and push docker image
+      uses: mr-smithesr-excellent/docker-build-push@v4
+      with:
+        image: grishatsu/middle-age
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME}}
+        password: ${{ secrets.DOCKER_PASSWORD}}
+  
+  deploy:
 
-#uses = setup,
-#run = command.
+    needs: build
+
+    steps:
+    - run: echo "Deployed succesfully"
+  
