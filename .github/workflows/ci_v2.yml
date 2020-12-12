@@ -17,10 +17,6 @@ jobs: #Callbacks, what happens when there's a trigger.
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
-
     steps:
     - uses: actions/checkout@v2 # Uses == selects an action, In action/ the reusable code is hosted. @v2 = version
     - name: Use Node.js ${{ matrix.node-version }} # Second step.
