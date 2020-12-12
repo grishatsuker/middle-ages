@@ -1,0 +1,36 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI #Describe the name of the workflow
+
+on: #Events that should trigger the workflow.
+  push:
+    branches: [ main ] # Only when pushing or pulling from/to Master we will trigger the workflow.
+  pull_request:
+    branches: [ main ]
+
+# For more events:
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows
+
+jobs: #Callbacks, what happens when there's a trigger.
+  build: # This is the first group of actions, you cna have many groups of action.
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
+    steps:
+    - uses: actions/checkout@v2 # Uses == selects an action, In action/ the reusable code is hosted. @v2 = version
+    - name: Use Node.js ${{ matrix.node-version }} # Second step.
+      uses: actions/setup-node@v1 #Here we will setup node.
+      with:
+        node-version: ${{ matrix.node-version }} #The version available...
+    - run: npm ci 
+    - run: npm run build --if-present
+    - run: npm test
+
+
+#uses = setup,
+#run = command.
