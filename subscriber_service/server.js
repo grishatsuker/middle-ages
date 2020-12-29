@@ -11,14 +11,17 @@ const app = express();
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
-
-app.get('/email_list', (req, res) => {
-  res.send('Here is the email list : ');
+num_gets = 0
+app.get('/count', (req, res) => {
+  num_gets += 1
+  res.send('Count is  ${num_gets}');
+  console.log("Count is now ${num_gets}")
 });
 
 
 app.listen(process.env.PORT || PORT, HOST, ()=>{
   console.log('Server is running on http://${HOST}:${PORT}');
+  console.log("hi")
 });
 
 module.exports = app;
