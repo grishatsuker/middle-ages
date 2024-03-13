@@ -1,16 +1,19 @@
 name: Groovy Linting
 
-on: [push] # Trigger the workflow on push events
+on: [push]
 
 jobs:
   lint:
-    runs-on: ubuntu-latest # Use the latest version of Ubuntu as the runner
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2 # Checks out your repository's code
+      uses: actions/checkout@v2
+
+    - name: Create linting configuration file
+      run: echo '{"extends":"recommended","rules":{"LineLength":{"enabled":false},"NestedBlockDepth":{"enabled":false}}}' > lint_config.json
 
     - name: Run Groovy linting
-      uses: docker://nvuillam/npm-groovy-lint:9.3 # Use the Docker image for linting
+      uses: docker://nvuillam/npm-groovy-lint:9.3
       with:
-        args: npm-groovy-lint --no-insight --noserver Jenkinsfile # Specify the command and arguments
+        args: npm-groovy-lint --no-insight --noserver -c lint_config.json
